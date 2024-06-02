@@ -13,13 +13,13 @@ def bot_login():
     return r
 
 
-# Запуск бота
 def run_bot(r):
     cur = database.con.cursor()
     print("Происходит проверка 50 комментариев")
-    for comment in r.subreddit('study').comments(limit=50):
-        if "университет" in comment.body.lower() and comment.author != r.user.me() and len(cur.execute(
-                f"SELECT comment_id FROM Comments WHERE comment_id = '{comment.id}'").fetchall()) == 0:
+    for comment in r.subreddit('rusAskReddit').comments(limit=50):
+        if (("университет" in comment.body.lower() or "уник" in comment.body.lower() or "вуз" in comment.body.lower())
+                and comment.author != r.user.me() and len(cur.execute(
+                f"SELECT comment_id FROM Comments WHERE comment_id = '{comment.id}'").fetchall()) == 0):
             print(f"Найден новый комментарий {comment.id}!")
             comment_reply = ("Дружище, не совершай ошибок, поступай в Московский Политехнический Университет!")
             comment.reply(comment_reply)
